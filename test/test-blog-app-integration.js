@@ -33,13 +33,25 @@ function generateBlogPosts(){
 	};
 }
 
+function clearBlogPostData(){
+  console.warn('Deleting database');
+  return mongoose.connection.dropDatabase();
+};
+
 describe('setup Integration Tests', function(){
-before(function(){
-	return runServer(TEST_DATABASE_URL);
+	before(function(){
+		return runServer(TEST_DATABASE_URL);
 	});
 
-beforeEach(function(){
-	return seedBlogPostData();
-})
-}
+	beforeEach(function(){
+		return seedBlogPostData();
+	});
+
+	afterEach(function(){
+		return clearBlogPostData();
+	});
+
+	after(function(){
+		return closeServer();
+	});
 });
